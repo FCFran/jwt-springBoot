@@ -1,5 +1,6 @@
 package com.dusseldorf.auth;
 
+import com.dusseldorf.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,6 +8,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -26,4 +29,5 @@ public class RegistrationRequest {
     @Size(min = 8, message = "Password should be 8 characters long minimum")
     @Length(min = 8, message = "Password should be 8 characters long minimum")
     private String password;
+    private List<Role> roles;
 }

@@ -2,6 +2,7 @@ package com.dusseldorf.auth;
 
 import com.dusseldorf.Respository.RoleRepository;
 import com.dusseldorf.Respository.UserRepository;
+import com.dusseldorf.model.Role;
 import com.dusseldorf.model.User;
 import com.dusseldorf.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,19 +26,21 @@ public class AuthenticationService {
 
     public void register(RegistrationRequest request) {
 
-        var userRole = roleRepository.findByName("USER")
-                //todo - better exception handling -> MANEJO DE EXCEPCIONES
-                .orElseThrow(() -> new IllegalStateException("ROLE USER was not initialized"));
+        var userRole = roleRepository.findAllById(request.getRoles().stream().map(Role::getId).toList());
 
-        var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .roles(List.of(userRole))
-                .build();
+        //todo - better exception handling -> MANEJO DE EXCEPCIONES
+        //.orElseThrow(() -> new IllegalStateException("ROLE USER was not initialized"));
+        if (userRole.size() == request.getRoles().size()) {
+            var user = User.builder()
+                    .firstname(request.getFirstname())
+                    .lastname(request.getLastname())
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .roles(userRole)
+                    .build();
 
-       userRepository.save(user);
+            userRepository.save(user);
+        }
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

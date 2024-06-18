@@ -17,27 +17,28 @@ import java.util.List;
 @EnableJpaAuditing
 public class SpringJwtFcApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringJwtFcApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpringJwtFcApplication.class, args);
+    }
 
-	@Bean
-	public CommandLineRunner commandLineRunner(RoleRepository roleRepository,
-										AuthenticationService service
-	){
-		return args -> {
-			if (roleRepository.findByName("USER").isEmpty()){
-				roleRepository.save(Role.builder().name("USER").build());
-			}
+    @Bean
+    public CommandLineRunner commandLineRunner(RoleRepository roleRepository,
+                                               AuthenticationService service
+    ) {
+        return args -> {
+            if (roleRepository.findByName("USER").isEmpty()) {
+                roleRepository.save(Role.builder().name("USER").build());
+            }
 
-			service.register(RegistrationRequest.builder()
-					.firstname("Felipe")
-					.lastname("Delgado")
-					.email("delgado@gmail.com")
-					.password("12345hello")
-					.build());
+            service.register(RegistrationRequest.builder()
+                    .firstname("Felipe")
+                    .lastname("Delgado")
+                    .email("delgado@gmail.com")
+                    .password("12345hello")
+                    .roles(List.of(Role.builder().Id(1).name("USER").build()))
+                    .build());
 
-		};
-	}
+        };
+    }
 
 }
