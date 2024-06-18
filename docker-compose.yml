@@ -1,0 +1,14 @@
+services:
+  postgres:
+    container_name: postgres-sql-fc
+    image: postgres
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data
+      #darle un nombre a la base de datos y se crea automaticamente
+      POSTGRES_DB: jwt_security_fc
+    #volumes:
+     # - postgres:/data/postgres
+    ports:
+      - 5434:5432

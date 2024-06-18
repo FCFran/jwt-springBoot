@@ -1,0 +1,24 @@
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/jwt_security_fc
+    username: username
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      show-sql: false # este puede ponerse o no por que el valor predeterminado es falso
+      properties:
+        hibernate:
+          format-sql: true
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+application:
+  security:
+    jwt:
+      secret-key: f7e3e7eb19cd945eb8ebfd1526b64c7b1a0cbeb7f5ff5710ffdb94ea2d6136d0
+      expiration: 8640000 #expiration un dia
+
